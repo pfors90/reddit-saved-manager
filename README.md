@@ -5,8 +5,9 @@ Python project to explore working with databases and API calls. Intended end-gam
 <ol>
     <li>Build database
         <ul>
-            <li>Explore reddit API and determine initial database requirements</li>
-            <li>Create Python code to create database</li>
+            <li><s>Explore reddit API and determine initial database requirements</s></li>
+            <li><s>Create Python code to create database</s></li>
+            <li>Remove hard-coded DB path and implement config file</li>
         </ul>
     </li><br>
     <li>Grab a single listing of saved files
