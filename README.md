@@ -7,14 +7,15 @@ Python project to explore working with databases and API calls. Intended end-gam
         <ul>
             <li><s>Explore reddit API and determine initial database requirements</s></li>
             <li><s>Create Python code to create database</s></li>
-            <li>Remove hard-coded DB path and implement config file</li>
+            <li><s>Remove hard-coded DB path and implement config file</s></li>
         </ul>
     </li><br>
     <li>Grab a single listing of saved files
         <ul>
-            <li>Store reddit API key somewhere (config file?)</li>
-            <li>Create a method <em>(name: updateSavedFromWeb ?)</em> that sends a single GET request to the API and stores the response in a variable</li>
-            <li>Return the variable storing the response data</li>
+            <li><s>Store reddit API key somewhere (config file?)</s>
+                <ul><li><s>Auth data stored in config file with handling for 2FA</s></li></ul></li>
+            <li><s>Create a method <em>(name: updateSavedFromWeb ?)</em> that sends a single GET request to the API and stores the response in a variable</s></li>
+            <li><s>Return the variable storing the response data</s></li>
         </ul>
     </li><br>
     <li>Parse the list of saved files
