@@ -4,17 +4,12 @@ import configparser
 # from http.cookiejar import offset_from_tz_string
 
 # TODO -----
-# rewrite this class to not use an .ini file but rather
-# just directly store all necessary information in this
-# class file and have the user edit as needed
-#
-# this will allow for easier storing and retrieval of refresh
-# tokens to avoid having to update 2FA codes and re-request auth
-#
-# api_caller.auth() can be modified to request and store all of
-# this info at first launch?
+#  rewrite this class to not use an .ini file but rather
+#  just directly store all necessary information in this
+#  class file and have the user edit as needed
+#  this will allow for easier storing and retrieval of refresh
+#  tokens to avoid having to update 2FA codes and re-request auth
 
-# store reddit instance in Config class to avoid passing around?
 
 class Config:
     def __init__(self, config_file):
