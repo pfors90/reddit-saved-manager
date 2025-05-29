@@ -9,3 +9,4 @@ class SavedPost:
     permalink: str
     score: int
     subreddit: str
+    body: str

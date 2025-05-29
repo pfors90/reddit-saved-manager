@@ -40,6 +40,7 @@ def parse_submission(praw_submission) -> SavedSubmission | None:
         permalink = praw_submission.permalink,
         score = praw_submission.score,
         subreddit = str(praw_submission.subreddit),
+        body = praw_submission.selftext,
         title = praw_submission.title if praw_submission.title else "[no title]",
         upvote_ratio = praw_submission.upvote_ratio,
         url = praw_submission.url,
