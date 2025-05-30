@@ -32,6 +32,7 @@ class Database:
                 CREATE TABLE IF NOT EXISTS saved_submissions (
                     id VARCHAR(12) PRIMARY KEY,
                     author VARCHAR(100),
+                    body TEXT,
                     created_time TIMESTAMP,
                     NSFW BOOLEAN,
                     permalink VARCHAR(300),
@@ -64,7 +65,7 @@ class Database:
 
         insert_comment_ids = [c.id for c in comments]
         placeholder = ",".join(["?"] * len(insert_comment_ids))
-        query = f"SELECT id FROM comments WHERE id IN ({placeholder})"
+        query = f"SELECT id FROM saved_comments WHERE id IN ({placeholder})"
 
         cursor = self.conn.execute(query, insert_comment_ids)
         existing_ids = {row[0] for row in cursor.fetchall()}
@@ -76,7 +77,7 @@ class Database:
         # setup and execute the query
         values = [(c.id, c.author, c.body, c.body_html, c.created_time, c.link_id, c.permalink, c.score, c.subreddit, c.post_title_retrieved, c.post_title) for c in new_comments]
         self.conn.executemany("""
-            INSERT INTO comments (id, author, body, body_html, created_time, link_id, permalink, score, subreddit, post_title_retrieved, post_title)
+            INSERT INTO saved_comments (id, author, body, body_html, created_time, link_id, permalink, score, subreddit, post_title_retrieved, post_title)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)
         """, values)
         self.conn.commit()
@@ -90,7 +91,7 @@ class Database:
 
         insert_submission_ids = [s.id for s in submissions]
         placeholder = ",".join(["?"] * len(insert_submission_ids))
-        query = f"SELECT id FROM submissions WHERE id IN ({placeholder})"
+        query = f"SELECT id FROM saved_submissions WHERE id IN ({placeholder})"
 
         cursor = self.conn.execute(query, insert_submission_ids)
         existing_ids = {row[0] for row in cursor.fetchall()}
@@ -100,10 +101,10 @@ class Database:
         # TODO -----
         #  setup a try/except block here to handle issues with the query not executing properly
         # setup and execute the query
-        values = [(s.id, s.author, s.created_time, s.NSFW, s.permalink, s.score, s.subreddit, s.title, s.upvote_ratio, s.url) for s in new_submissions]
+        values = [(s.id, s.author, s.body, s.created_time, s.NSFW, s.permalink, s.score, s.subreddit, s.title, s.upvote_ratio, s.url) for s in new_submissions]
         self.conn.executemany("""
-            INSERT INTO submissions (id, author, created_time, NSFW, permalink, score, subreddit, title, upvote_ratio, url)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO saved_submissions (id, author, body, created_time, NSFW, permalink, score, subreddit, title, upvote_ratio, url)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, values)
 
         self.conn.commit()

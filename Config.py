@@ -1,16 +1,5 @@
 import configparser
 
-# why was this included?
-# from http.cookiejar import offset_from_tz_string
-
-# TODO -----
-#  rewrite this class to not use an .ini file but rather
-#  just directly store all necessary information in this
-#  class file and have the user edit as needed
-#  this will allow for easier storing and retrieval of refresh
-#  tokens to avoid having to update 2FA codes and re-request auth
-
-
 class Config:
     def __init__(self, config_file):
         self._parser = configparser.ConfigParser()
@@ -50,4 +39,4 @@ class Config:
 
     @property
     def IS_2FA(self):
-        return self._parser['AUTH']['IS_2FA']
+        return int(self._parser['AUTH']['IS_2FA'])

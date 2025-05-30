@@ -2,7 +2,6 @@ import praw
 from typing import List
 
 class RedditHandler:
-
     def __init__(self, config):
         self.config = config
         self.reddit = self._authenticate()
@@ -17,7 +16,7 @@ class RedditHandler:
             username = self.config.USERNAME,
         )
 
-        print("User authenticated as " + reddit.user.me())
+        print("User authenticated as " + str(reddit.user.me()))
 
         return reddit
 
