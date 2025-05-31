@@ -14,7 +14,7 @@ def test_parse_post_comment():
     mock_praw_comment_1.score = 64
     mock_praw_comment_1.subreddit = "testsub1"
 
-    saved_comment = utilities.parse_post(mock_praw_comment_1)
+    saved_comment = utilities.rewrap_post(mock_praw_comment_1)
 
     assert isinstance(saved_comment, utilities.SavedPost)
     assert saved_comment.type == "t1"
@@ -37,7 +37,7 @@ def test_parse_post_submission():
     mock_praw_submission_1.selftext = "Self text test 1"
     mock_praw_submission_1.body = None # have to define body for proper test due to the way MagicMock works
 
-    saved_submission = utilities.parse_post(mock_praw_submission_1)
+    saved_submission = utilities.rewrap_post(mock_praw_submission_1)
 
     assert isinstance(saved_submission, utilities.SavedPost)
     assert saved_submission.type == "t3"
@@ -118,7 +118,7 @@ def test_parse_posts():
     call_args = mock_app.reddit.get_submissions_by_ids.call_args[0][0]
     assert set(call_args) == set(["t3_retrieve_1", "t3_retrieve_2"])
 
-    filled_titles = [p.post_title for p in saved_posts if p.type == "t1"]
+    filled_titles = [p.title for p in saved_posts if p.type == "t1"]
     assert "Mock Lookup Title 1" in filled_titles
     assert "Mock Lookup Title 2" in filled_titles
 

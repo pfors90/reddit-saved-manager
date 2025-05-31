@@ -23,18 +23,16 @@ def parse_menu_option(app, option):
 
         saved_items_praw = app.reddit.retrieve_saved(limit = None)
 
-        saved_comments, saved_submissions = utilities.parse_posts(app, saved_items_praw)
-        app.db.insert_comments(saved_comments)
-        app.db.insert_submissions(saved_submissions)
+        saved_posts = utilities.parse_posts(app, saved_items_praw)
+        app.db.insert_posts(saved_posts)
 
     elif option == 2:
         print("Import up to 500 recent posts")
         limit = pyip.inputNum("Number to import: ", min = 1, max = 500)
         saved_items_praw = app.reddit.retrieve_saved(limit = limit)
 
-        saved_comments, saved_submissions = utilities.parse_posts(app, saved_items_praw)
-        app.db.insert_comments(saved_comments)
-        app.db.insert_submissions(saved_submissions)
+        saved_posts = utilities.parse_posts(app, saved_items_praw)
+        app.db.insert_posts(saved_posts)
 
     else:
         raise CustomExceptions.InvalidMenuOptionException(f"Invalid menu option [{option}] entered.\nYou shouldn\'t have been able to do that\n")

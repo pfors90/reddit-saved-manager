@@ -21,7 +21,7 @@ class SavedPost:
     def __str__(self):
         if self.type == "t1":
             return(
-                f"[{self.subreddit}] -- Post Title: {'not yet retrieved' if not self.post_title_retrieved else self.post_title}\n"
+                f"[{self.subreddit}] -- Post Title: {'not yet retrieved' if not self.post_title_retrieved else self.title}\n"
                 f"{self.body}\n"
                 f"Author: {self.author} -- {self.created_time} -- {self.permalink}"
             )
@@ -31,4 +31,4 @@ class SavedPost:
                 f"Author: {self.author} -- {self.created_time} -- {self.url}"
             )
         else:
-            return(f"Invalid post type [{self.type}]")
+            return f"Invalid post type [{self.type}]"

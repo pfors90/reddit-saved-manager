@@ -3,11 +3,9 @@ import sqlite3
 class Database:
     def __init__(self, db_file):
         self.conn = None
-        print(f"Connecting to \"{db_file}\"")
         try:
             self.conn = sqlite3.connect(db_file)
             self.cursor = self.conn.cursor()
-            print(f"Connection to database file at \"{db_file}\" successful")
         except sqlite3.Error as e:
             print(f"Error: {e}")
 
@@ -37,7 +35,6 @@ class Database:
         try:
             self.cursor.execute(query)
             self.conn.commit()
-            print("Query executed successfully")
         except sqlite3.Error as e:
             print(f"Error [{e}] when executing query:")
             print(query)
