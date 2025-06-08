@@ -100,3 +100,34 @@ def populate_comment_post_info(comments: List[SavedPost], posts_by_id: Dict[str,
                 comment.url = getattr(post, "url", "[no url]")
 
             comment.post_title_retrieved = True
+
+# TODO -----
+#  extract input logic to a separate function if more options are added
+def paginate_posts(posts: List[SavedPost]):
+    interval = 5
+    count = 0
+
+    while count < len(posts):
+        print(posts[count])
+
+        count += 1
+
+        if count % interval == 0 and count < len(posts):
+            choice = input("[N]ext / [B]ack / [Q]uit: ")
+
+            if choice.strip().lower() == 'c':
+                continue
+
+            elif choice.strip().lower() == 'b':
+                count = max(count - (interval * 2), 0)
+
+            elif choice.strip().lower() == 'q':
+                print("Returning to main menu...")
+                break
+
+            else:
+                print("Invalid choice. Returning to main menu...")
+                return
+
+        elif count >= len(posts):
+            print("[end of records]")
