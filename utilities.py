@@ -18,7 +18,7 @@ def rewrap_comment(praw_post) -> SavedPost | None:
         score = praw_post.score,
         subreddit = str(praw_post.subreddit),
         NSFW = True,
-        title = "[Unknown]",
+        post_title="[Unknown]",
         post_title_retrieved = False,
         url = "[no url]"
     )
@@ -42,7 +42,7 @@ def rewrap_submission(praw_post) -> SavedPost | None:
         upvote_ratio = praw_post.upvote_ratio,
         subreddit = str(praw_post.subreddit),
         NSFW = getattr(praw_post, "over_18", True),
-        title = getattr(praw_post, "title", "[no title]"),
+        post_title= getattr(praw_post, "post_title", "[no post_title]"),
         post_title_retrieved = True,
         url = getattr(praw_post, "url", "[no url]")
     )
@@ -57,7 +57,7 @@ def rewrap_post(praw_post):
 
 # converts praw.model objects to custom SavedPost objects and pulls link_ids
 # from comments to batch requests Submission objects via praw in order to
-# populate comment .title data member
+# populate comment .post_title data member
 # TODO -----
 #  update to handle '[removed]' '[removed by reddit]' and '[deleted]' posts
 #  we still want to store these in the database by ID to allow for bulk deletes
@@ -92,14 +92,22 @@ def parse_posts(app, praw_posts):
 
 def populate_comment_post_info(comments: List[SavedPost], posts_by_id: Dict[str, SavedPost]):
     for comment in comments:
-        if not comment.post_title_retrieved and comment.title == "[Unknown]":
+        if not comment.post_title_retrieved and comment.post_title == "[Unknown]":
             post = posts_by_id.get(comment.link_id)
             if post:
                 comment.NSFW = getattr(post, "over_18", True)
-                comment.title = getattr(post, "title", "[no title]")
+                comment.post_title = getattr(post, "post_title", "[no post_title]")
                 comment.url = getattr(post, "url", "[no url]")
+                comment.upvote_ratio = getattr(post, "upvote_ratio", 0.00)
 
             comment.post_title_retrieved = True
+
+def generate_objects_from_sql(sql_results):
+    if not sql_results:
+        return []
+
+    saved_posts = [SavedPost(**row) for row in sql_results]
+    return saved_posts
 
 # TODO -----
 #  extract input logic to a separate function if more options are added
@@ -108,20 +116,20 @@ def paginate_posts(posts: List[SavedPost]):
     count = 0
 
     while count < len(posts):
-        print(posts[count])
+        print(posts[count], end="\n\n----- ----- ----- ----- -----\n\n")
 
         count += 1
 
         if count % interval == 0 and count < len(posts):
-            choice = input("[N]ext / [B]ack / [Q]uit: ")
+            choice = input("[N]ext / [B]ack / [Q]uit: ").strip().lower()
 
-            if choice.strip().lower() == 'c':
+            if choice == "n":
                 continue
 
-            elif choice.strip().lower() == 'b':
+            elif choice == "b":
                 count = max(count - (interval * 2), 0)
 
-            elif choice.strip().lower() == 'q':
+            elif choice == "q":
                 print("Returning to main menu...")
                 break
 

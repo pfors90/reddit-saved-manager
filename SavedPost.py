@@ -13,22 +13,22 @@ class SavedPost:
     score: int
     subreddit: str
     NSFW: bool = False
-    title: str = "Unknown"
+    post_title: str = "Unknown"
     post_title_retrieved: bool = False
     url: str = "Unknown"
     upvote_ratio: float = 0.00
 
+    # TODO -----
+    #  standardize this so that it looks better in pagination
     def __str__(self):
         if self.type == "t1":
-            return(
-                f"[{self.subreddit}] -- Post Title: {'not yet retrieved' if not self.post_title_retrieved else self.title}\n"
-                f"{self.body}\n"
-                f"Author: {self.author} -- {self.created_time} -- {self.permalink}"
-            )
+            long_type = "Comment"
         elif self.type == "t3":
-            return(
-                f"{self.score} ({self.upvote_ratio}) -- [{self.subreddit}] -- \"{self.title}\"\n"
-                f"Author: {self.author} -- {self.created_time} -- {self.url}"
-            )
+            long_type = "Submission"
         else:
-            return f"Invalid post type [{self.type}]"
+            long_type = "Unknown"
+        return(
+            f"[{long_type}] -- /r/{self.subreddit} -- by {self.author} at {self.created_time} \n"
+            f"Title: {self.post_title}\n"
+            f"{self.body if self.body else '[no selftext]'}\n"
+            f"https://old.reddit.com{self.permalink}")

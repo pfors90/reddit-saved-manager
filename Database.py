@@ -5,6 +5,7 @@ class Database:
         self.conn = None
         try:
             self.conn = sqlite3.connect(db_file)
+            self.conn.row_factory = sqlite3.Row
             self.cursor = self.conn.cursor()
         except sqlite3.Error as e:
             print(f"Error: {e}")
@@ -39,6 +40,15 @@ class Database:
             print(f"Error [{e}] when executing query:")
             print(query)
 
+    def select_query(self, query):
+        try:
+            result = self.cursor.execute(query)
+            return result.fetchall()
+        except sqlite3.Error as e:
+            print(f"Error [{e}] when executing query:")
+            print(query)
+            return []
+
     def insert_posts(self, posts):
         if not posts:
             return
@@ -66,7 +76,7 @@ class Database:
             p.score,
             p.subreddit,
             p.NSFW,
-            p.title,
+            p.post_title,
             p.post_title_retrieved,
             p.url,
             p.upvote_ratio
